@@ -38,12 +38,12 @@ class Pace2PaceActions:
             Pace2PaceActions.eprint(help_text)
             sys.exit(-1)
 
-        doc = Doc(urls)
-        doc.load()
-        doc.validate()
-        print doc
+        docReader = DocReader(urls)
+        docReader.load()
+        docReader.validate()
+        print docReader
 
-class Doc:
+class DocReader:
     docText = None
     jsonText = None
     signature = None
@@ -71,7 +71,7 @@ class Doc:
         return pgp_key
 
     def load(self):
-        self.urlRes = self.get_doc_from_urls();
+        self.urlRes = self.getDocFromUrls();
         self.parseDoc()
         self.parseJsonMessage()
 
@@ -86,7 +86,7 @@ class Doc:
             raise Pace2PaceDocSigInvalid(self.checkedUrl)
         self.isVerified = True
 
-    def get_doc_from_urls(self):
+    def getDocFromUrls(self):
         for url in self.urls:
             try:
                 self.checkedUrl = url
@@ -100,6 +100,56 @@ class Doc:
         return 'Pace2PaceDoc(urls={}, valid={})'.format(self.urls, self.isVerified)
     def __bool__(self):
         return self.isVerified
+
+class RequestProceesor:
+    ''' This class gets a request and handles it'''
+    request = None
+    isValid = False
+    doc = None
+    validationKeyName = None
+    validationKey = None
+
+    def __init__(self, requestJson):
+        self.requestJson = requestJson
+
+    def load(self):
+        # parse the reuqest json
+        self.request = json.loads(requestJson)
+        # load the attached doc
+        self.doc = DocReader(self.request['urls'])
+        self.doc.load()
+        self.doc.validate()
+        # get the validation key
+
+
+    def validate(self):
+        # laod key
+        # validate against requested key
+        pass
+
+class BaseLoginValidation:
+    ''' This class handles the process of validating login process
+note that this is the basic implemetation. The specific implementation of the protocol, must be applied as extention of this class
+    '''
+    def __init__(self, privateKey, encodedRequest):
+        self.privateKey = privateKey
+        self.encodedRequest = encodedRequest
+        self.validationString = validationString
+
+    def load(self):
+        # decode the endcoded request
+        # validate string
+        # load / validate doc
+        # validate request
+        pass
+
+    def getValidationString(self):
+        '''
+        '''
+        pass
+
+    def validate(self):
+        pass
 
 if __name__ == '__main__':
     action = None
