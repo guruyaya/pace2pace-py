@@ -21,7 +21,6 @@ class Pace2PaceMasterRequest():
             raise NotImplementedError('Your installed version support only version %.2f and down' % VERSION) 
         self.version = version
         self.timestamp = int( time.time() ) if timestamp == None else timestamp
-        print (self.timestamp)
 
     def to_json(self):
         ''' Returns a json representation of the unsigned request'''
@@ -36,3 +35,7 @@ class Pace2PaceMasterRequest():
         '''
         with open(file, 'w') as f:
             f.write(self.to_json())
+
+class NewUserRequest(Pace2PaceMasterRequest):
+    def __init__(self, name: str, comment: str = '', timestamp: int = None, version: float = VERSION):
+        Pace2PaceMasterRequest.__init__(self, 'new_user', {'Pace2Pace': {'name': name, 'comment': comment}})

@@ -2,7 +2,7 @@ import unittest
 import tempfile
 import os
 import json
-from pace2pace import Pace2PaceMasterRequest
+from pace2pace_master_client import Pace2PaceMasterRequest, NewUserRequest
 
 class pace2pace_test(unittest.TestCase):
     def test_gen_request(self):
@@ -36,6 +36,13 @@ class pace2pace_test(unittest.TestCase):
                 self.assertEqual(newreq['Pace2Pace']['version'], 0.1)
         finally:
             os.unlink (temp_sig)
+
+    def test_new_user_request(self):
+        nu = NewUserRequest('test', 'this is a test')
+        # self.assertEqual(nu.action, 'new_user')
+        self.assertEqual(nu.data['Pace2Pace']['name'], 'test')
+        self.assertEqual(nu.data['Pace2Pace']['comment'], 'this is a test')
+        self.assertEqual(nu.version, 0.1)
 
 if __name__ == '__main__':
     unittest.main(argv=[''],verbosity=2, exit=False)
