@@ -2,9 +2,9 @@ import unittest
 import tempfile
 import os
 import json
-from pace2pace_master_client import Pace2PaceMasterRequest, NewUserRequest
+from pace2pace_client import Pace2PaceMasterRequest, NewUserRequest
 
-class pace2pace_test(unittest.TestCase):
+class pace2pace_master_client_test(unittest.TestCase):
     def test_gen_request(self):
         genreq = Pace2PaceMasterRequest('this', {'is': 'a test'})
         self.assertEqual(genreq.action, 'this')
