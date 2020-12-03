@@ -82,13 +82,14 @@ class pace2pace_root_key_test(unittest.TestCase):
             kc = RootKeyChain(logger, [key1])
             key2 = RootKey.new('testpass', 'testname', 'test')
             self.assertEqual( kc.add(key2, 'Worng Password'), False )
+            self.assertEqual( kc.add(key2), False )
             self.assertEqual( kc.add(key2, 'testpass'), True )
             self.assertEqual (len(kc.keys), 2)
 
-        self.assertEqual (cm.output, [
-'INFO:pace2pace:Keychain initialized', 'DEBUG:pace2pace:INIT Appended key: test', 
-'ERROR:pace2pace:Failed to add key: testname', 'INFO:pace2pace:Added key: testname'
-        ])
+        self.assertEqual (cm.output, 
+            ['INFO:pace2pace:Keychain initialized', 'INFO:pace2pace:Added key: test Not verified', 
+            'ERROR:pace2pace:Failed to add key: testname', 'ERROR:pace2pace:Failed to add key: testname', 
+            'INFO:pace2pace:Added key: testname'])
 
 
 if __name__ == '__main__':

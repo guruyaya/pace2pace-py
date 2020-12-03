@@ -71,12 +71,11 @@ class RootKeyChain():
         self.logger.info("Keychain initialized")
 
         for key in keys:
-            logger.debug('INIT Appended key: {}'.format(key.name))
-            self.keys.append( key )
+            self.add(key, is_skip_validation=True)
 
-    def add(self, key, password):
-        if key.is_key_valid(password):
-            self.logger.info('Added key: {}'.format(key.name))
+    def add(self, key, password='', is_skip_validation=False):
+        if is_skip_validation or key.is_key_valid(password):
+            self.logger.info('Added key: {}{}'.format(key.name, ' Not verified' if is_skip_validation else ''))
             self.keys.append(key)
             return True
 
