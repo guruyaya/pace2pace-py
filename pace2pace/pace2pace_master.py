@@ -30,7 +30,7 @@ class RootKey():
     def verify(self, data: str, signature: str):
         return bool( self.public.verify(data, pgpy.PGPSignature.from_blob(signature)) )
 
-    def is_key_valid(self, password) -> bool:
+    def is_key_valid(self, password): str -> bool:
         test_str = 'This is a test'
         try:
             signature = self.sign(test_str, password)
